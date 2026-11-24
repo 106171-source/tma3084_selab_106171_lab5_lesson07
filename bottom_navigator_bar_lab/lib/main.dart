@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'screen1.dart';
 import 'screen2.dart';
 import 'screen3.dart';
 import 'screen4.dart';
 
-void main() => runApp(const MainApp());
+void main() {
+  runApp(
+    ChangeNotifierProvider(create: (_) => TabModel(), child: const MyApp()),
+  );
+}
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class TabModel extends ChangeNotifier {
+  int _selectedIndex = 0;
+
+  int get selectedIndex => _selectedIndex;
+
+  void selectIndex(int index) {
+    if (index == _selectedIndex) return;
+    _selectedIndex = index;
+    notifyListeners();
+  }
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +36,10 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class BottomNavLab extends StatefulWidget {
+class BottomNavLab extends StatelessWidget {
   const BottomNavLab({super.key});
 
-  @override
-  State<BottomNavLab> createState() => _BottomNavLabState();
-}
-
-class _BottomNavLabState extends State<BottomNavLab> {
-  int currentIndex = 0;
-
-  final List<Widget> screens = const [
+  static const List<Widget> screens = [
     Screen1(),
     Screen2(),
     Screen3(),
@@ -38,6 +48,8 @@ class _BottomNavLabState extends State<BottomNavLab> {
 
   @override
   Widget build(BuildContext context) {
+    final currentIndex = context.watch<TabModel>().selectedIndex;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bottom navigation bar'),
@@ -48,15 +60,10 @@ class _BottomNavLabState extends State<BottomNavLab> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         fixedColor: Colors.white,
-        unselectedItemColor: Colors.white70,
         backgroundColor: Colors.blue,
         iconSize: 30,
         currentIndex: currentIndex,
-        onTap: (int index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
+        onTap: (int index) => context.read<TabModel>().selectIndex(index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.alarm), label: 'Alarm'),
