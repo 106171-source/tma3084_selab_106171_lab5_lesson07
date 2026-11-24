@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screen1.dart';
+import 'screen01.dart';
 import 'screen2.dart';
 import 'screen3.dart';
 import 'screen4.dart';
@@ -30,7 +30,7 @@ class _BottomNavLabState extends State<BottomNavLab> {
   int currentIndex = 0;
 
   final List<Widget> screens = const [
-    Screen1(),
+    Screen01(),
     Screen2(),
     Screen3(),
     Screen4(),
@@ -40,7 +40,7 @@ class _BottomNavLabState extends State<BottomNavLab> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bottom navigation bar'),
+        title: const Text('Bottom Navigation Bar Lab 5'),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
       ),
